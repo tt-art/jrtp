@@ -13,6 +13,8 @@ import com.acks.binding.SearchCriteria;
 import com.acks.entity.CitizenPlan;
 import com.acks.service.CitizenPlanServiceImpl;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class CitizenPlanController {
 	@Autowired
@@ -44,5 +46,28 @@ public class CitizenPlanController {
 		model.addAttribute("planNames", planNames);
 		model.addAttribute("planStatus", planStatus);
 	}
+	
+	@GetMapping("/excel")
+	public void downloadExcel(HttpServletResponse response) throws Exception {
+		
+		response.setContentType("application/octet-stream");
+		String headerKey="Content-Disposition";
+		String headerValue="attachment;filename=data.xls";
+		response.addHeader(headerKey, headerValue);
+		service.generateExcel(response);
+		
+	}
+	@GetMapping("/pdf")
+	public void downloadPdf(HttpServletResponse response)throws Exception{
+		
+		response.setContentType("application/pdf");
+		String headerKey="Content-Disposition";
+		String headerValue="attachment;filename=data.pdf";
+		response.addHeader(headerKey, headerValue);
+		service.generatePdf(response);
+	}
+	
+	
+	
 
 }
